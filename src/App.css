@@ -1,38 +1,71 @@
+body {
+    margin: 0;
+    background-color: #ccc
+}
+
 .App {
-  text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding-top: 15px;
+    font-family: "Ubuntu", sans-serif;
+    
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+button {
+    color: white;
+    background-color: teal;
+    border: 1px solid white;
+    border-radius: 15px;
+    font-size: 2rem;
+    padding: 10px;
+    margin: 10px 0;
+    font-weight: 300;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Use flex wrap? or make whole body (or content container) grid? */
+
+.card-wrapper {
+    height: 400px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+/* New Task Time Section */
+
+.time-wrapper {
+    display: flex;
+    direction: column;
 }
 
-.App-link {
-  color: #61dafb;
+.time-input {
+    width: 30px;
+    height: 15px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Task Time Section */
+
+.task-card-wrapper {
+    border: 1px solid gray;
+    border-radius: 5px;
+    box-shadow: 3px 2px 1px rgb(220,220,220,.5);
+ 
+}
+
+.time-box {
+    font-size: 2rem;
+    background-color: #eee;
+    border-radius: 1px solid #ddd;
+}
+
+.time-box:not(:last-child) {
+    margin-right: 8px; 
+}
+
+.task-btn-wrapper {
+    
+    margin-top: 20px;
 }
