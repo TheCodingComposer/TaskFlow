@@ -1,22 +1,51 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import randomColor from '../randomColor.js'
 import playIcon from '../icons/play.png'
 
 export default function TaskCard({task, removeTask}) {
 
-    //change using useRef?
-    const initialState = useRef({hours: task.hours, minutes: task.minutes, seconds: task.seconds})
+    const [startingPosition, setStartingPosition] = useState({})
 
+    //set x / y properties of element 
+    const positionRef = useCallback((node) => {
+        console.log(node)
+        if (node !== null) {
+            setStartingPosition({
+                x: node.getBoundingClientRect().x,
+                y: node.getBoundingClientRect().y
+            })
+        }
+    }, [])
 
+    const initialState = useRef({
+        hours: task.hours, 
+        minutes: task.minutes, 
+        seconds: task.seconds, 
+        backgroundColor: randomColor()
+    })
 
-    const backgroundColor = useRef(randomColor())
-    
-
+   
+  
     const firstRender = useRef(true)
 
-    const [timeRemaining, setTimeRemaining] = useState({hours: task.hours, minutes: task.minutes, seconds: task.seconds})
+    
+
+    const [timeRemaining, setTimeRemaining] = useState({
+        hours: task.hours, 
+        minutes: task.minutes, 
+        seconds: task.seconds})
     const [intervalId, setIntervalId] = useState(null)
     const [startTimer, setStartTimer] = useState(false)
+    const [mouseDown, setMouseDown] = useState(false)
+    const [position, setPosition] = useState({
+        x: 0,
+        y: 0}
+        )
+        //position of mouse within element when initially clicked
+    const [currentOffset, setCurrentOffset] = useState({xOffset: 0, yOffset: 0})
+
+    //set to true on mouse up so that element "floats" back into position
+    const [released, setReleased] = useState(false)
 
 
 
@@ -30,6 +59,7 @@ export default function TaskCard({task, removeTask}) {
 
         if (startTimer) {
 
+            
             //declare initial values
             let {hours, minutes, seconds} = timeRemaining
         
@@ -89,7 +119,50 @@ export default function TaskCard({task, removeTask}) {
 
 
     return (
-        <div  className="card-wrapper task-card-wrapper" style={{backgroundColor: backgroundColor.current}}>
+        <div  className="card-wrapper task-card-wrapper" 
+            style={{backgroundColor: initialState.current.backgroundColor, 
+            position: 'relative',
+            left: position.x,
+            top: position.y,
+            transition: released ? '.3s' : '0s',
+            zIndex: mouseDown ? '1' : '0'
+            }}
+            ref={positionRef}
+            
+            onMouseDown={(e) => {
+                setReleased(false)
+                setCurrentOffset({xOffset: e.clientX,
+                    yOffset: e.clientY})
+                 setMouseDown(true) 
+            }}
+
+            onMouseUp={() => {
+                
+               setMouseDown(false)
+               setReleased(true)
+               setPosition({x: 0, y: 0})
+            }}
+
+            //if mouse goes out of element, trigger mouseup 
+            onMouseOut={(e) => {
+                setMouseDown(false)
+                setReleased(true)
+                setPosition({x: 0, y: 0})
+            }}
+
+            onPointerMove={(e) => {
+            
+                if (mouseDown) {
+                    
+                    setPosition({
+                        x: (e.clientX - currentOffset.xOffset), 
+                        y: (e.clientY - currentOffset.yOffset)
+                        })
+                }
+            }}
+
+            
+            >
             <h1>{task.taskName ? task.taskName : "Untitled"}</h1>
             <div className="task-time-wrapper time-wrapper" >
                 <div className="time-box">
@@ -109,14 +182,22 @@ export default function TaskCard({task, removeTask}) {
                 </div>
             </div>
             <div className="task-btn-wrapper">
-                <button onClick={() => setStartTimer(!startTimer)}>{startTimer ? <img src={playIcon}  /> : 'Play'}</button>
+
+                <button onClick={() => setStartTimer(!startTimer)}>
+                {startTimer ? <img 
+                    src={playIcon} 
+                    style={{width: '50px', height: '50px'}} /> 
+                    : 'Play'}
+                </button>
 
                 <button onClick={() => {
 
                 setStartTimer(false)
+                //may need to do initialState.current.hours, etc. since BG color is in object
                 setTimeRemaining(initialState.current)
                 
                 }}>Restart</button>
+
            </div>
            <button onClick={() => {
             removeTask(task.id)
