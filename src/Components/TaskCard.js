@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import randomColor from '../randomColor.js'
 import playIcon from '../icons/play.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
+import { faCirclePause } from '@fortawesome/free-regular-svg-icons';
+
 
 export default function TaskCard({task, removeTask}) {
 
@@ -184,10 +188,8 @@ export default function TaskCard({task, removeTask}) {
             <div className="task-btn-wrapper">
 
                 <button onClick={() => setStartTimer(!startTimer)}>
-                {startTimer ? <img 
-                    src={playIcon} 
-                    style={{width: '50px', height: '50px'}} /> 
-                    : 'Play'}
+                {startTimer ? <FontAwesomeIcon className='play-icon' icon={faCirclePause} />
+                    : <FontAwesomeIcon className='play-icon' icon={faCirclePlay} />}
                 </button>
 
                 <button onClick={() => {
