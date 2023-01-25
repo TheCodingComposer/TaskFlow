@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import randomColor from '../randomColor.js'
-import playIcon from '../icons/play.png'
+import randomColor from '../randomColor.js';
+import AlarmSound from "../AlarmSound.js";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import { faCirclePause } from '@fortawesome/free-regular-svg-icons';
@@ -38,6 +39,7 @@ export default function TaskCard({task, removeTask}) {
         hours: task.hours, 
         minutes: task.minutes, 
         seconds: task.seconds})
+    //id to turn off counter with clearInterval
     const [intervalId, setIntervalId] = useState(null)
     const [startTimer, setStartTimer] = useState(false)
     const [mouseDown, setMouseDown] = useState(false)
@@ -51,7 +53,7 @@ export default function TaskCard({task, removeTask}) {
     //set to true on mouse up so that element "floats" back into position
     const [released, setReleased] = useState(false)
 
-
+   const [alarm, setAlarm] = useState({ringing: false, id: 0})
 
 
     useEffect(() => {
@@ -71,7 +73,6 @@ export default function TaskCard({task, removeTask}) {
                 
                 //Is there a better way than nesting?
 
-               
 
                     if (seconds > 0) {
                         setTimeRemaining(prevValue => { return ({...prevValue, seconds: prevValue.seconds - 1}) })
@@ -88,9 +89,11 @@ export default function TaskCard({task, removeTask}) {
                                 minutes = 59;
                                 seconds = 59;
                             } else {
-                                alert('TIME')
+                                let alarmId = AlarmSound(true, 'default')
+                                setAlarm({...alarm, ringing: true, id: alarmId})
                                 setTimeRemaining(prevValue => { return ({hours: 0, minutes: 0, seconds: 0})})
                                 setStartTimer(false)
+                                
                             
                         }
                      
@@ -132,6 +135,16 @@ export default function TaskCard({task, removeTask}) {
             zIndex: mouseDown ? '1' : '0'
             }}
             ref={positionRef}
+
+            onClick={() => {
+                console.log(alarm)
+                if (alarm.ringing) {
+                    AlarmSound(false, null, alarm.id)
+                    setAlarm({ringing: false, id: 0})
+                    
+                    
+                }
+            }}
             
             onMouseDown={(e) => {
                 setReleased(false)
