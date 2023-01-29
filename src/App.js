@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import NewTaskForm from './Components/NewTaskForm';
 import TaskCard from './Components/TaskCard';
@@ -11,11 +11,13 @@ import TaskCard from './Components/TaskCard';
 
 
 function App() {
-
-  const [tasks, setTasks] = useState([])
-
  
-
+  const [tasks, setTasks] = useState(() => {
+    // getting stored value
+    const saved = localStorage.getItem("tasks");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+  });
 
   function handleCreateNewTask(newTask) {
     
@@ -32,6 +34,12 @@ function App() {
      setTasks(filteredTasks)
   }
    
+
+  useEffect(() => {
+    // storing input name
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
 
   return (
     <div className="App">
