@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import randomColor from '../randomColor.js';
 import AlarmSound from "../AlarmSound.js";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import { faCirclePause } from '@fortawesome/free-regular-svg-icons';
+import Arrow from "./Arrow.js";
 
 
-export default function TaskCard({task, removeTask}) {
+export default function TaskCard({task, removeTask, handleMoveTask}) {
 
     const [startingPosition, setStartingPosition] = useState({})
 
@@ -26,7 +26,7 @@ export default function TaskCard({task, removeTask}) {
         hours: task.hours, 
         minutes: task.minutes, 
         seconds: task.seconds, 
-        backgroundColor: randomColor()
+        backgroundColor: task.backgroundColor
     })
 
    
@@ -214,6 +214,23 @@ export default function TaskCard({task, removeTask}) {
                 }}>Restart</button>
 
            </div>
+
+            {/* Better to consolidate into single component? */}
+            <Arrow
+                back={true}
+                onArrowClick={handleMoveTask}
+                id={task.id}
+            />
+            <Arrow
+                back={false}
+                onArrowClick={handleMoveTask}
+                id={task.id}
+            />
+
+
+
+
+           {/* Turn into x button in to left */}
            <button onClick={() => {
             removeTask(task.id)
            }}>CLICK ME</button>

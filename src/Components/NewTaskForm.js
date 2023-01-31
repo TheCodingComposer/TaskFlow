@@ -1,10 +1,11 @@
 import {useState, useId} from 'react'
+import randomColor from '../randomColor';
 
 export default function NewTaskForm({createNewTask}) {
 
     
-
-    const [newTask, setNewTask] = useState({taskName: '', hours: '', minutes: '', seconds: ''});
+    //consolidate hours/minutes/seconds into their own time object within larger object?
+    const [newTask, setNewTask] = useState({taskName: '', hours: '', minutes: '', seconds: '', backgroundColor: ''});
 
    
 
@@ -79,10 +80,19 @@ export default function NewTaskForm({createNewTask}) {
             
             </div>
 
+            <div className="color-selector-container">
+
+                <h1>Color:</h1>
+                
+            </div>
+
             <button onClick={() => { 
-        
-                createNewTask(newTask)
-                setNewTask({taskName: '', hours: '', minutes: '', seconds: ''})
+                //choose random background color (future: let user choose with input)
+                const bgColor = randomColor()
+                
+                console.log(newTask)
+                createNewTask({...newTask, backgroundColor: bgColor})
+                setNewTask({taskName: '', hours: '', minutes: '', seconds: '', backgroundColor: ''})
                 
                 }
                 }>Create New Task</button>
