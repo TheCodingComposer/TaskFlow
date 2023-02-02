@@ -201,7 +201,7 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
             <div className="task-btn-wrapper">
 
                 <button onClick={() => setStartTimer(!startTimer)}>
-                {startTimer ? <FontAwesomeIcon className='play-icon' icon={faCirclePause} />
+                {startTimer ? <FontAwesomeIcon className='pause-icon' icon={faCirclePause} />
                     : <FontAwesomeIcon className='play-icon' icon={faCirclePlay} />}
                 </button>
 

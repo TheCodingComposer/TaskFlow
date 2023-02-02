@@ -80,10 +80,12 @@ button {
 
 .left-arrow {
     left: 0;
-    
+    cursor: pointer;
+    font-size: 25px;
 }
 
 .right-arrow {
     right: 0;
-    
+    cursor: pointer;
+    font-size: 25px;
 }
