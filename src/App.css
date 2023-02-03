@@ -24,6 +24,16 @@ button {
     font-weight: 300;
 }
 
+li {
+    margin: 0;
+    list-style: none;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
 /* Use flex wrap? or make whole body (or content container) grid? */
 
 .card-wrapper {
@@ -34,6 +44,10 @@ button {
     align-items: center;
     position: relative;
     
+}
+
+.new-task-btn {
+    margin-top: 100px;
 }
 
 
@@ -90,4 +104,40 @@ button {
     right: 0;
     cursor: pointer;
     font-size: 25px;
+}
+
+
+/* Dropdown Menu */
+
+
+.dropdown {
+    background-color: white;
+    position: relative;
+    width: 120px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dropdown-item-container {
+    position: absolute;
+    /* bottom: -60px; */
+    background-color: #eee;
+    /* height: 60px; */
+    width: 100px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-item {
+   height: 20px;
 }

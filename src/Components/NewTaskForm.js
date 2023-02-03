@@ -1,11 +1,14 @@
 import {useState, useId} from 'react'
 import randomColor from '../randomColor';
+import Dropdown from './Dropdown';
 
 export default function NewTaskForm({createNewTask}) {
 
     
     //consolidate hours/minutes/seconds into their own time object within larger object?
     const [newTask, setNewTask] = useState({taskName: '', hours: '', minutes: '', seconds: '', backgroundColor: ''});
+
+    const [palette, setPalette] = useState('Random');
 
    
 
@@ -56,6 +59,10 @@ export default function NewTaskForm({createNewTask}) {
         }
     }
 
+    function handlePaletteChange(palette) {
+        setPalette(palette)
+    }
+
 
 
     return (
@@ -80,15 +87,14 @@ export default function NewTaskForm({createNewTask}) {
             
             </div>
 
-            <div className="color-selector-container">
+            <Dropdown 
+                palette={palette}
+                onPaletteChange={handlePaletteChange}
+            />
 
-                <h1>Color:</h1>
-                
-            </div>
-
-            <button onClick={() => { 
+            <button className="new-task-btn" onClick={() => { 
                 //choose random background color (future: let user choose with input)
-                const bgColor = randomColor()
+                const bgColor = randomColor(palette)
                 
                 console.log(newTask)
                 createNewTask({...newTask, backgroundColor: bgColor})

@@ -71,8 +71,6 @@ function App() {
 
       setTasks(tasksCopy)
       
-   
-   
   }
    
 
