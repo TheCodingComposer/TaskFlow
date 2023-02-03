@@ -13,15 +13,31 @@ body {
   
 }
 
+/* center cards when showing one column */
+
+@media (max-width: 605px) {
+    .App {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+}
+
 button {
     color: white;
     background-color: teal;
     border: 1px solid white;
     border-radius: 15px;
-    font-size: 2rem;
+    font-size: 1.3rem;
     padding: 10px;
     margin: 10px 0;
-    font-weight: 300;
+    font-weight: 200;
+}
+
+h3 {
+    margin: 0;
 }
 
 li {
@@ -47,7 +63,7 @@ ul {
 }
 
 .new-task-btn {
-    margin-top: 100px;
+    margin-top: 20px;
 }
 
 
@@ -116,7 +132,10 @@ ul {
     width: 120px;
     text-align: center;
     cursor: pointer;
+    margin: 15px 0 ;
 }
+
+
 
 .dropdown-item-container {
     position: absolute;
@@ -129,7 +148,9 @@ ul {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 5;
 }
+
 
 .dropdown-list {
     display: flex;
@@ -139,5 +160,7 @@ ul {
 }
 
 .dropdown-item {
-   height: 20px;
+   padding: 5px 0;
+   width: 100px;
+   border-bottom: 1px solid rgb(220, 220, 220, .5   )
 }

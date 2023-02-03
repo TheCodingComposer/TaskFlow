@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-export default function DropdownItem({name, onChosenPalette, currentPalette}) {
+export default function DropdownItem({name, onChosenOption, currentOption}) {
 
     const [hover, setHover] = useState(false)
 
@@ -16,8 +16,7 @@ export default function DropdownItem({name, onChosenPalette, currentPalette}) {
 
     return (
         <li className="dropdown-item" 
-            style={{height: '30px', 
-            color: hover || name === currentPalette ? 'black' : 'gray'}}
+            style={{color: hover || name === currentOption ? 'black' : 'gray'}}
 
         onMouseEnter={() => {
             setHover(true)
@@ -28,7 +27,7 @@ export default function DropdownItem({name, onChosenPalette, currentPalette}) {
 
     
         onClick={() => {
-            onChosenPalette(name)
+            onChosenOption(name)
         }}>
             {name}
         </li>

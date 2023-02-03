@@ -26,7 +26,8 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
         hours: task.hours, 
         minutes: task.minutes, 
         seconds: task.seconds, 
-        backgroundColor: task.backgroundColor
+        backgroundColor: task.backgroundColor,
+        sound: task.sound
     })
 
    
@@ -89,7 +90,7 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
                                 minutes = 59;
                                 seconds = 59;
                             } else {
-                                let alarmId = AlarmSound(true, 'default')
+                                let alarmId = AlarmSound(true, task.sound)
                                 setAlarm({...alarm, ringing: true, id: alarmId})
                                 setTimeRemaining(prevValue => { return ({hours: 0, minutes: 0, seconds: 0})})
                                 setStartTimer(false)

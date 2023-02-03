@@ -9,7 +9,7 @@ import gentleAlarm from "./alarm-sounds/gentleAlarm_veens705.mp3"
 //ringing = true or false.  quality = default, harsh, gentle.   id = for clearInterval
 export default function AlarmSound(ringing, quality = null, intervalId = 0) {
 
-    let sound
+    let sound;
 
     switch (quality) {
         case 'default':

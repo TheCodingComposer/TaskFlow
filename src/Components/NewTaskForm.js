@@ -2,13 +2,16 @@ import {useState, useId} from 'react'
 import randomColor from '../randomColor';
 import Dropdown from './Dropdown';
 
-export default function NewTaskForm({createNewTask}) {
+export default function NewTaskForm({createNewTask, deleteTasks}) {
 
     
-    //consolidate hours/minutes/seconds into their own time object within larger object?
+    //TODO consolidate hours/minutes/seconds into their own time object within larger object?
     const [newTask, setNewTask] = useState({taskName: '', hours: '', minutes: '', seconds: '', backgroundColor: ''});
 
+    //one of five color palettes to use for card BG color
     const [palette, setPalette] = useState('Random');
+    //one of three sounds to use for alarm quality
+    const [sound, setSound] = useState('default')
 
    
 
@@ -59,8 +62,8 @@ export default function NewTaskForm({createNewTask}) {
         }
     }
 
-    function handlePaletteChange(palette) {
-        setPalette(palette)
+    function handleDropdownChange(name, type) {
+        (type === 'color') ? setPalette(name) : setSound(name)    
     }
 
 
@@ -86,10 +89,19 @@ export default function NewTaskForm({createNewTask}) {
                 <input value={newTask.seconds} className="hour-input time-input" maxLength="2" placeholder="00" onChange={handleSecondChange}></input>
             
             </div>
-
+            <h3>Color:</h3>
             <Dropdown 
-                palette={palette}
-                onPaletteChange={handlePaletteChange}
+                name={palette}
+                options={['Random', 'Warm', 'Cool', 'Pastel', 'Neon']}
+                onDropdownChange={handleDropdownChange}
+                type={'color'}
+            />
+            <h3>Sound:</h3>
+            <Dropdown 
+                name={sound}
+                options={['gentle', 'default', 'harsh']}
+                onDropdownChange={handleDropdownChange}
+                type={'sound'}
             />
 
             <button className="new-task-btn" onClick={() => { 
@@ -97,11 +109,15 @@ export default function NewTaskForm({createNewTask}) {
                 const bgColor = randomColor(palette)
                 
                 console.log(newTask)
-                createNewTask({...newTask, backgroundColor: bgColor})
-                setNewTask({taskName: '', hours: '', minutes: '', seconds: '', backgroundColor: ''})
+                createNewTask({...newTask, backgroundColor: bgColor, sound: sound})
+                setNewTask({taskName: '', hours: '', minutes: '', seconds: '', backgroundColor: '', sound: 'default'})
                 
                 }
                 }>Create New Task</button>
+
+            <button onClick={() => {
+                deleteTasks();
+            }}>Delete Tasks</button>
 
         </div>
     </>

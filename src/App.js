@@ -72,6 +72,11 @@ function App() {
       setTasks(tasksCopy)
       
   }
+
+  //delete all tasks
+  function handleDeleteTasks() {
+    setTasks([])
+  }
    
 
   useEffect(() => {
@@ -84,6 +89,7 @@ function App() {
     <div className="App">
       <NewTaskForm
         createNewTask={handleCreateNewTask}
+        deleteTasks={handleDeleteTasks}
       />
       {tasks && tasks.map((task) => {
       return (
