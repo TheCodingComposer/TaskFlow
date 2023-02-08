@@ -9,7 +9,7 @@ body {
     font-family: "Ubuntu", sans-serif;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-column-gap: 6px;
-    grid-row-gap:6px;
+    grid-row-gap:20px;
   
 }
 
@@ -63,7 +63,7 @@ ul {
 }
 
 .new-task-btn {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 
