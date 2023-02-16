@@ -31,5 +31,5 @@ export default function(palette) {
 
     const color = colors[Math.floor(Math.random() * colors.length)];
 
-    return color;
+    return [color, colors];
 }

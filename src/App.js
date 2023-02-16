@@ -29,6 +29,16 @@ function App() {
     //generate random id for each task
     const id = Math.floor(Math.random() * 1000000)
 
+    if (!newTask.hours) {
+      newTask.hours = 0
+    }
+    if (!newTask.minutes) {
+      newTask.minutes = 0
+    }
+    if (!newTask.seconds) {
+      newTask.seconds = 0
+    }
+
     setTasks([...tasks, {...newTask, id: id}])
  
   }

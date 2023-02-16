@@ -13,7 +13,7 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
 
     //set x / y properties of element 
     const positionRef = useCallback((node) => {
-        console.log(node)
+        
         if (node !== null) {
             setStartingPosition({
                 x: node.getBoundingClientRect().x,
@@ -185,17 +185,15 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
             <div className="task-time-wrapper time-wrapper" >
                 <div className="time-box">
                     {/* show extra 0 if null */}
-                    {!timeRemaining.hours && 0}
+                    {/* {!timeRemaining.hours && 0} */}
                     {/* show 0 in front of number if only one digit */}
                     {timeRemaining.hours > 9 ? timeRemaining.hours : "0" + timeRemaining.hours}
                     
                 </div>
                 <div className="time-box">
-                    {!Number(timeRemaining.minutes) && 0}
                     {timeRemaining.minutes > 9 ? timeRemaining.minutes : "0" + timeRemaining.minutes}
                 </div>
                 <div className="time-box">
-                    {!timeRemaining.seconds && 0}
                     {timeRemaining.seconds > 9 ? timeRemaining.seconds : "0" + timeRemaining.seconds}
                 </div>
             </div>

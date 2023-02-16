@@ -14,6 +14,7 @@ export default function AlarmSound(ringing, quality = null, intervalId = 0) {
     switch (quality) {
         case 'default':
              sound = new Audio(defaultAlarm);
+             sound.volume = .6
             break;
         case 'harsh':
             sound = new Audio(harshAlarm);

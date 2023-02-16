@@ -10,6 +10,8 @@ export default function NewTaskForm({createNewTask, deleteTasks}) {
 
     //one of five color palettes to use for card BG color
     const [palette, setPalette] = useState('Random');
+    //prevent color repetition
+    const [usedColors, setUsedColors] = useState([]);
     //one of three sounds to use for alarm quality
     const [sound, setSound] = useState('default')
 
@@ -105,10 +107,35 @@ export default function NewTaskForm({createNewTask, deleteTasks}) {
             />
 
             <button className="new-task-btn" onClick={() => { 
+
                 //choose random background color (future: let user choose with input)
-                const bgColor = randomColor(palette)
+                //TODO - move this logic to another file? 
+                    //Another possibility - iterate through task array from app.js and
+                    //pick color that is not included in last few cards
+
+                let [bgColor, colorArray] = randomColor(palette);
+
+                if (usedColors.length === colorArray.length) {
+                    if (bgColor === usedColors[-1]) {
+                        bgColor = usedColors[0]
+                    }
+                    setUsedColors([bgColor])
+                    console.log('restart')
+                } else {
+                    
+                while (usedColors.includes(bgColor)) {
+                    bgColor = colorArray[Math.floor(Math.random() * colorArray.length)]
+                    console.log('while loop ' + bgColor)
+                }
+
+                setUsedColors(prev => [...prev, bgColor]) 
+
+                }
+
+                //set time to 0 if empty
                 
-                console.log(newTask)
+                
+                
                 createNewTask({...newTask, backgroundColor: bgColor, sound: sound})
                 setNewTask({taskName: '', hours: '', minutes: '', seconds: '', backgroundColor: '', sound: 'default'})
                 
@@ -117,6 +144,7 @@ export default function NewTaskForm({createNewTask, deleteTasks}) {
 
             <button onClick={() => {
                 deleteTasks();
+                setUsedColors([])
             }}>Delete Tasks</button>
 
         </div>
