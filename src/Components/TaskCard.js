@@ -5,22 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import { faCirclePause } from '@fortawesome/free-regular-svg-icons';
 import Arrow from "./Arrow.js";
+import comparePositions from "../comparePositions.js";
 
 
-export default function TaskCard({task, removeTask, handleMoveTask}) {
+export default function TaskCard({task, removeTask, handleMoveTask, handleArrowClick, taskPositions, handleTaskPositions}) {
 
-    const [startingPosition, setStartingPosition] = useState({})
+    
 
-    //set x / y properties of element 
-    const positionRef = useCallback((node) => {
-        
-        if (node !== null) {
-            setStartingPosition({
-                x: node.getBoundingClientRect().x,
-                y: node.getBoundingClientRect().y
-            })
-        }
-    }, [])
 
     const initialState = useRef({
         hours: task.hours, 
@@ -43,19 +34,41 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
     //id to turn off counter with clearInterval
     const [intervalId, setIntervalId] = useState(null)
     const [startTimer, setStartTimer] = useState(false)
-    const [mouseDown, setMouseDown] = useState(false)
-    const [position, setPosition] = useState({
+    const [alarm, setAlarm] = useState({ringing: false, id: 0})
+
+
+
+    //POSITION LOGIC FOR CLICK/DRAG
+
+    const [startingPosition, setStartingPosition] = useState({})
+
+
+   //use to get x, y, width, and height of element
+    const positionRef = useRef()
+    //how far card moved after click
+    const [positionDeviation, setPositionDeviation] = useState({
         x: 0,
         y: 0}
         )
         //position of mouse within element when initially clicked
-    const [currentOffset, setCurrentOffset] = useState({xOffset: 0, yOffset: 0})
+    const [initialClickPosition, setinitialClickPosition] = useState({xOffset: 0, yOffset: 0})
 
     //set to true on mouse up so that element "floats" back into position
     const [released, setReleased] = useState(false)
+    const [mouseDown, setMouseDown] = useState(false)
 
-   const [alarm, setAlarm] = useState({ringing: false, id: 0})
-
+   //set position
+   useEffect(() => {
+    let startingX = positionRef.current.getBoundingClientRect().x;
+    let startingY = positionRef.current.getBoundingClientRect().y;
+    setStartingPosition({
+                    x: startingX,
+                    y: startingY
+                })
+    
+    handleTaskPositions(task.id, startingX, startingY)
+    
+   }, [])
 
     useEffect(() => {
         //keep from running on first render
@@ -70,6 +83,7 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
             //declare initial values
             let {hours, minutes, seconds} = timeRemaining
         
+            //could use a timerIdRef instead
             const id = setInterval(() => {
                 
                 //Is there a better way than nesting?
@@ -130,51 +144,61 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
         <div  className="card-wrapper task-card-wrapper" 
             style={{backgroundColor: initialState.current.backgroundColor, 
             position: 'relative',
-            left: position.x,
-            top: position.y,
+            left: positionDeviation.x,
+            top: positionDeviation.y,
             transition: released ? '.3s' : '0s',
             zIndex: mouseDown ? '1' : '0'
             }}
             ref={positionRef}
+            
 
             onClick={() => {
-                console.log(alarm)
+                
                 if (alarm.ringing) {
                     AlarmSound(false, null, alarm.id)
-                    setAlarm({ringing: false, id: 0})
-                    
-                    
+                    setAlarm({ringing: false, id: 0}) 
                 }
             }}
             
             onMouseDown={(e) => {
                 setReleased(false)
-                setCurrentOffset({xOffset: e.clientX,
+                setinitialClickPosition({xOffset: e.clientX,
                     yOffset: e.clientY})
-                 setMouseDown(true) 
+                 setMouseDown(true)
             }}
 
-            onMouseUp={() => {
+            onMouseUp={(e) => {
                 
+                const ids = comparePositions(
+                    task.id,
+                    startingPosition.x + positionDeviation.x, 
+                    startingPosition.y + positionDeviation.y,
+                    taskPositions)
+
+                if (ids) {
+                    const [id, foundId] = ids;
+                    handleMoveTask(id, foundId)
+                }
+
                setMouseDown(false)
                setReleased(true)
-               setPosition({x: 0, y: 0})
+               setPositionDeviation({x: 0, y: 0})
             }}
 
             //if mouse goes out of element, trigger mouseup 
             onMouseOut={(e) => {
                 setMouseDown(false)
                 setReleased(true)
-                setPosition({x: 0, y: 0})
+                setPositionDeviation({x: 0, y: 0})
             }}
 
             onPointerMove={(e) => {
             
                 if (mouseDown) {
                     
-                    setPosition({
-                        x: (e.clientX - currentOffset.xOffset), 
-                        y: (e.clientY - currentOffset.yOffset)
+                    setPositionDeviation({
+                        x: (e.clientX - initialClickPosition.xOffset), 
+                        y: (e.clientY - initialClickPosition.yOffset)
                         })
                 }
             }}
@@ -217,12 +241,12 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
             {/* Better to consolidate into single component? */}
             <Arrow
                 back={true}
-                onArrowClick={handleMoveTask}
+                onArrowClick={handleArrowClick}
                 id={task.id}
             />
             <Arrow
                 back={false}
-                onArrowClick={handleMoveTask}
+                onArrowClick={handleArrowClick}
                 id={task.id}
             />
 
@@ -232,7 +256,7 @@ export default function TaskCard({task, removeTask, handleMoveTask}) {
            {/* Turn into x button in to left */}
            <button onClick={() => {
             removeTask(task.id)
-           }}>CLICK ME</button>
+           }}>DELETE</button>
 
         </div>
     )
