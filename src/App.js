@@ -69,28 +69,46 @@ function App() {
   //clickedId = id of task card clicked on, swappedId = id of task card to be swapped with
   function handleMoveTask(clickedId, swappedId) {
 
-    const taskPositionsCopy = [...taskPositions];
 
-    console.log(taskPositionsCopy)
+    const tasksCopy = [...tasks];  
 
-    const clickedIndex = taskPositions.findIndex((el) => el.id === clickedId)
-    const clickedTask = taskPositions[clickedIndex]
-    const swappedIndex = taskPositions.findIndex((el) => el.id === swappedId)
-    const swappedTask = taskPositions[swappedIndex]
+    const clickedIndex = tasksCopy.findIndex((el) => el.id === clickedId)
+    const clickedTask = tasksCopy[clickedIndex]
+    const swappedIndex = tasksCopy.findIndex((el) => el.id === swappedId)
+    const swappedTask = tasksCopy[swappedIndex]
 
-    console.log(clickedTask, swappedTask)
-    console.log('clicked index: ' + clickedIndex + 'swapped Index: ' + swappedIndex + 'clicked task: ' + clickedTask + 'swapped task: ' + swappedTask)
-    //TODO fix splice logic
-    taskPositionsCopy.splice(clickedIndex, 1, swappedTask)
-    taskPositionsCopy.splice(swappedIndex, 1, clickedTask)
+    tasksCopy.splice(clickedIndex, 1, swappedTask)
+    tasksCopy.splice(swappedIndex, 1, clickedTask)
 
-  
+    setTasks(tasksCopy)
+
+ 
+    const taskPositionsCopy = [...taskPositions]
+
+    let newPositions = []
+
+    tasksCopy.forEach((el, index) => {
+
+      let itemId = taskPositionsCopy.filter(task => task.id === el.id)
+
+      let item = {
+        id: itemId[0].id,
+        x: taskPositionsCopy[index].x,
+        y: taskPositionsCopy[index].y
+      }
+
+      //item.id = taskPositionsCopy[index].x
+      
+      newPositions.push(item)
+    })
     
-  
 
-    console.log(taskPositionsCopy)
+    setTaskPositions(newPositions)
     
   }
+
+
+
 
   // if 'back' is true, move back in array, otherwise move foward
   function handleArrowClick(id, back) {

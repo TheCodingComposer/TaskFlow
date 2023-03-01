@@ -57,7 +57,11 @@ export default function TaskCard({task, removeTask, handleMoveTask, handleArrowC
     const [released, setReleased] = useState(false)
     const [mouseDown, setMouseDown] = useState(false)
 
-   //set position
+
+
+    
+
+   //set position on first render
    useEffect(() => {
     let startingX = positionRef.current.getBoundingClientRect().x;
     let startingY = positionRef.current.getBoundingClientRect().y;
@@ -67,19 +71,32 @@ export default function TaskCard({task, removeTask, handleMoveTask, handleArrowC
                 })
     
     handleTaskPositions(task.id, startingX, startingY)
-    
+    firstRender.current = false;
    }, [])
 
-    useEffect(() => {
-        //keep from running on first render
-        if (!firstRender.current) {
-            
+
+   //update startingPosition after card swap
+   useEffect(() => {
+        if (firstRender.current == false) {
+        const newStartingPosition = taskPositions.filter(t => t.id === task.id)
+
+        //setTimeout = temporary fix to delay firing after adding new task
+        //Error resulted because the taskPositions hadn't updated in time to fit new task
+        setTimeout(() => {
+            setStartingPosition({x: newStartingPosition[0].x, y: newStartingPosition[0].y})
+        }, 100)
+              
+        
         }
-            firstRender.current = false
+   }, [taskPositions])
+
+
+   
+
+    useEffect(() => {
 
         if (startTimer) {
-
-            
+   
             //declare initial values
             let {hours, minutes, seconds} = timeRemaining
         
@@ -131,13 +148,7 @@ export default function TaskCard({task, removeTask, handleMoveTask, handleArrowC
      
     }, [startTimer])
 
-   
-
-
     let timerStarted = false;
-
-
-   
 
 
     return (
