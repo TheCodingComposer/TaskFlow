@@ -63,6 +63,8 @@ export default function TaskCard({task, removeTask, handleMoveTask, handleArrowC
 
    //set position on first render
    useEffect(() => {
+
+
     let startingX = positionRef.current.getBoundingClientRect().x;
     let startingY = positionRef.current.getBoundingClientRect().y;
     setStartingPosition({

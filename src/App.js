@@ -156,7 +156,9 @@ function App() {
     //need to make async? Or is local storage always faster than React state?
     const storedPositions = JSON.parse(localStorage.getItem('taskPositions'))
 
-   
+      if (!storedPositions) {
+        return;
+      }
 
       const includes = storedPositions.filter(p => id === p.id)
     
