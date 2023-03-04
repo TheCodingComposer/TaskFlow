@@ -79,7 +79,7 @@ export default function TaskCard({task, removeTask, handleMoveTask, handleArrowC
 
    //update startingPosition after card swap
    useEffect(() => {
-        if (firstRender.current == false) {
+        if (firstRender.current == false && taskPositions) {
         const newStartingPosition = taskPositions.filter(t => t.id === task.id)
 
         //setTimeout = temporary fix to delay firing after adding new task
