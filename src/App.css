@@ -90,13 +90,18 @@ ul {
 
 .time-box {
     font-size: 2rem;
-    background-color: #eee;
     border-radius: 1px solid #ddd;
 }
 
-.time-box:not(:last-child) {
-    margin-right: 8px; 
+.task-time-wrapper {
+    padding: 3px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 3px;
 }
+
+/* .time-box:not(:last-child) {
+    margin-right: 8px; 
+} */
 
 .task-btn-wrapper {
     

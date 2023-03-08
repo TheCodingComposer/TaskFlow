@@ -225,10 +225,12 @@ export default function TaskCard({task, removeTask, handleMoveTask, handleArrowC
                     {/* {!timeRemaining.hours && 0} */}
                     {/* show 0 in front of number if only one digit */}
                     {timeRemaining.hours > 9 ? timeRemaining.hours : "0" + timeRemaining.hours}
+                    :
                     
                 </div>
                 <div className="time-box">
                     {timeRemaining.minutes > 9 ? timeRemaining.minutes : "0" + timeRemaining.minutes}
+                    :
                 </div>
                 <div className="time-box">
                     {timeRemaining.seconds > 9 ? timeRemaining.seconds : "0" + timeRemaining.seconds}
