@@ -5,7 +5,7 @@ export default function(palette) {
     switch (palette) {
 
         case 'Random':
-            colors = ['green', 'blue', 'red', 'yellow', 'orange'];
+            colors = ['#0ad2ff', '#2962ff', '#9500ff', '#ff0059', '#ff8c00', '#b4e600', '#0fffdb'];
             break;
         case "Warm":
             colors = ['#F2921D', '#F2CD5C', '#A61F69', '#F55050', '#DC3535', '#FF869E', '#95CD41'];
