@@ -3,6 +3,20 @@ import './App.css';
 import NewTaskForm from './Components/NewTaskForm';
 import TaskCard from './Components/TaskCard';
 
+import { Amplify } from 'aws-amplify';
+import config from './aws-exports';
+import "@aws-amplify/ui-react/styles.css"
+import {
+  withAuthenticator,
+  Button,
+  Heading,
+  Image,
+  View,
+  Card
+} from "@aws-amplify/ui-react"
+
+Amplify.configure(config)
+
 
 //give tasks keys
 
@@ -10,7 +24,9 @@ import TaskCard from './Components/TaskCard';
 
 
 
-function App() {
+function App({ signOut }) {
+
+
  
   const [tasks, setTasks] = useState(() => {
     // getting stored value 
@@ -187,6 +203,8 @@ function App() {
 
   return (
     <div className="App">
+
+
       <NewTaskForm
         createNewTask={handleCreateNewTask}
         deleteTasks={handleDeleteTasks}
@@ -206,8 +224,12 @@ function App() {
 
       )
       })}
+      <View>
+      <Button onClick={signOut}>Sign out</Button>
+      </View>
     </div>
+    
   );
 }
 
-export default App;
+export default withAuthenticator(App);
